@@ -9,7 +9,7 @@
                 <a class="nav-link active"
                   [ngClass]="{'active-contact': selectedContact === i}"
                   aria-current="page" (click)="onClickSelectContact(i)">Contact
-                  {{i+1}} <i class="fa fa-trash" ></i></a>
+                  {{i+1}} <i class="fa fa-trash" (click)="onClickDelete(i)" ></i></a>
               </li>
             </ng-container>
             }
@@ -29,7 +29,9 @@
             type="text"
             class="form-control"
             formControlName="first_name"
+            
           />
+          <app-common-validation-error [control]="contactForm.get('first_name')" [key]="'First Name'"></app-common-validation-error>  
         </div>
         <div class="col">
           <label for class="form-label">Last Name</label>
@@ -42,6 +44,7 @@
             >Email<span class="text-danger">*</span></label
           >
           <input type="text" class="form-control" formControlName="email" />
+          <app-common-validation-error [control]="contactForm.get('email')" [key]="'Email'"></app-common-validation-error>
         </div>
         <div class="col">
           <label for class="form-label">Phone</label>
@@ -51,4 +54,7 @@
     </div>
     <div></div>
   </form>
+</div>
+<div class="container m-5 float-end">
+  <button class="btn btn-primary end-0 m-3" (click)="onClickSave()">Save</button>
 </div>
