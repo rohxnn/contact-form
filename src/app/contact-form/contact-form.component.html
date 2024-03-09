@@ -1,7 +1,6 @@
 <div class="container-fluid border container m-5">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           @for(contact of contactIds; track contact; let i = $index) {
             <ng-container>
@@ -14,12 +13,11 @@
             </ng-container>
             }
         </ul>
-      </div>
-      <button class="btn btn-primary ml-auto" (click)="onClickAddContact()">+Add Contact</button>
+      <button class="btn ml-auto" (click)="onClickAddContact()">+Add Contact</button>
     </div>
   </nav>
   <form [formGroup]="contactForm">
-    <div class="container w-50 mx-0">
+    <div class="container w-50 mx-0 p-3">
       <div class="row">
         <div class="col">
           <label for class="form-label"
@@ -55,6 +53,6 @@
     <div></div>
   </form>
 </div>
-<div class="container m-5 float-end">
-  <button class="btn btn-primary end-0 m-3" (click)="onClickSave()">Save</button>
+<div class="float-end save-btn">
+  <button class="btn mx-5" (click)="onClickSave()">Save</button>
 </div>
