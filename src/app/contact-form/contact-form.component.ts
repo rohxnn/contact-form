@@ -13,17 +13,18 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [ ReactiveFormsModule, CommonModule, CommonValidationErrorComponent, NgxMaskDirective ],
+  imports: [ReactiveFormsModule, CommonModule, CommonValidationErrorComponent, NgxMaskDirective],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.scss',
-  providers: [ provideNgxMask()]
+  providers: [provideNgxMask()]
 })
 export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
   contactIds: number[] = [1];
   contacts: ContactModel[] = [];
   selectedContact: number;
-  constructor( private fb: FormBuilder) {}
+  isSaveClicked: boolean;
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.initContactRegistration();
@@ -31,17 +32,21 @@ export class ContactFormComponent implements OnInit {
 
   initContactRegistration() {
     this.contactForm = this.fb.group({
-      'first_name': ['', [ Validators.required, noWhitespaceValidator ]],
+      'first_name': ['', [Validators.required, noWhitespaceValidator]],
       'last_name': [''],
-      'email': ['', [ Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'), noWhitespaceValidator ]],
+      'email': ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'), noWhitespaceValidator]],
       'phone': ['']
     });
   }
 
   onClickAddContact() {
-    if(this.contactForm.valid) {
+    console.log();
+
+    if (this.contactForm.valid) {
       this.contactIds.push(this.contactIds.length + 1);
-      this.contacts.push(this.contactForm.value);
+      if (!this.isSaveClicked) {
+        this.contacts.push(this.contactForm.value)
+      }
     } else {
       this.contactForm.markAllAsTouched();
     }
@@ -49,7 +54,7 @@ export class ContactFormComponent implements OnInit {
 
   onClickSelectContact(index: number) {
     this.selectedContact = index;
-    if(this.contacts[index]) {
+    if (this.contacts[index]) {
       this.contactForm.patchValue(this.contacts[index]);
     } else {
       this.contactForm.reset();
@@ -58,19 +63,21 @@ export class ContactFormComponent implements OnInit {
 
   onClickDelete(index: number) {
     this.contactIds.splice(index - 1, 1);
-    this.contacts.splice(index,1);
+    this.contacts.splice(index, 1);
   }
 
-  onClickSave() {
-    const newContact = this.contactForm.value;
-    const existingObject = this.contacts.some(data => 
-      Object.keys(newContact).every(key => newContact[key] === data[key])
-    );
-    if(this.contactForm.valid && !existingObject) {
+  saveContacts() {
+    this.isSaveClicked = true;
+    const existingObject = this.contacts.some(data => data.email === this.contactForm.get('email').value);
+    if (this.contactForm.valid && !existingObject) {
       this.contacts.push(this.contactForm.value);
     } else {
       this.contactForm.markAllAsTouched();
     }
-    console.log("contacts:", this.contacts);
+  }
+
+  onClickSave() {
+    this.saveContacts();
+    console.log("Contacts:", this.contacts);
   }
 }
