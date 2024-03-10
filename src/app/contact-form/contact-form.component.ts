@@ -7,13 +7,16 @@ import { ContactModel } from '../model/contact.model';
 import { CommonValidationErrorComponent } from '../shared/common-validation-error/common-validation-error.component';
 //validator
 import { noWhitespaceValidator } from '../shared/custom-validator/nowhitespace.validators';
+//third party
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [ ReactiveFormsModule, CommonModule, CommonValidationErrorComponent ],
+  imports: [ ReactiveFormsModule, CommonModule, CommonValidationErrorComponent, NgxMaskDirective ],
   templateUrl: './contact-form.component.html',
-  styleUrl: './contact-form.component.scss'
+  styleUrl: './contact-form.component.scss',
+  providers: [ provideNgxMask()]
 })
 export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
@@ -59,12 +62,15 @@ export class ContactFormComponent implements OnInit {
   }
 
   onClickSave() {
-    const existingObject = this.contacts.some((data =>  data === this.contactForm.value));
+    const newContact = this.contactForm.value;
+    const existingObject = this.contacts.some(data => 
+      Object.keys(newContact).every(key => newContact[key] === data[key])
+    );
     if(this.contactForm.valid && !existingObject) {
       this.contacts.push(this.contactForm.value);
-      console.log("contacts:", this.contacts);
     } else {
       this.contactForm.markAllAsTouched();
     }
+    console.log("contacts:", this.contacts);
   }
 }
