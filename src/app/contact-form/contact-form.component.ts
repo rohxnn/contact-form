@@ -40,8 +40,6 @@ export class ContactFormComponent implements OnInit {
   }
 
   onClickAddContact() {
-    console.log();
-
     if (this.contactForm.valid) {
       this.contactIds.push(this.contactIds.length + 1);
       if (!this.isSaveClicked) {
