@@ -1,0 +1,17 @@
+.container {
+  height: 75vh;
+  margin: 0;
+  padding: 0;
+}
+.active-contact {
+  background-color: rgb(204, 202, 202); 
+  font-weight: bold; 
+}
+.btn {
+  background-color: darkblue;
+  color: white;
+}
+.save-btn {
+  position: relative;
+  bottom: 30px;
+}
