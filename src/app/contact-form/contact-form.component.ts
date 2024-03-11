@@ -21,7 +21,7 @@ export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
   contactIds: number[] = [1];
   contacts: ContactModel[] = [];
-  selectedContact: number;
+  selectedContact: number = 0;
   isSaveClicked: boolean;
   constructor(private fb: FormBuilder) { }
 
@@ -39,10 +39,13 @@ export class ContactFormComponent implements OnInit {
   }
 
   onClickAddContact() {
-    if (this.contactForm.valid) {
+    const existingObject = this.contacts.some(data => data.email === this.contactForm.get('email').value);
+    if (this.contactForm.valid && !existingObject) {
       this.contactIds.push(this.contactIds.length + 1);
       if (!this.isSaveClicked) {
         this.contacts.push(this.contactForm.value)
+      } else {
+        this.isSaveClicked = false;
       }
     } else {
       this.contactForm.markAllAsTouched();
@@ -72,7 +75,9 @@ export class ContactFormComponent implements OnInit {
     this.isSaveClicked = true;
     const existingObject = this.contacts.some(data => data.email === this.contactForm.get('email').value);
     if (this.contactForm.valid && !existingObject) {
-      this.contacts.push(this.contactForm.value);
+      this.contacts.push(this.contactForm.value)
+    } else if(this.contactForm.valid && existingObject) {
+      this.contacts[this.selectedContact] = this.contactForm.value;
     } else {
       this.contactForm.markAllAsTouched();
     }
