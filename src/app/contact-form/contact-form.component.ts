@@ -40,9 +40,9 @@ export class ContactFormComponent implements OnInit {
 
   onClickAddContact() {
     const existingObject = this.contacts.some(data => data.email === this.contactForm.get('email').value);
-    if (this.contactForm.valid && !existingObject) {
+    if (this.contactForm.valid) {
       this.contactIds.push(this.contactIds.length + 1);
-      if (!this.isSaveClicked) {
+      if (!this.isSaveClicked && !existingObject) {
         this.contacts.push(this.contactForm.value)
       } else {
         this.isSaveClicked = false;
