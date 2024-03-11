@@ -5,13 +5,10 @@
         @for(contact of contactIds; track contact; let i = $index) {
         <ng-container>
           <li class="nav-item border">
-            <a class="nav-link active"
-              [ngClass]="{'active-contact': selectedContact === i}"
+            <a class="nav-link" [ngClass]="{'active-contact': selectedContact === i}"
               aria-current="page" (click)="onClickSelectContact(i)">Contact
               {{i+1}}
-              @if(contactIds.length>1) {
               <i class="fa fa-trash" (click)="onClickDelete(i)"></i>
-              }
             </a>
           </li>
         </ng-container>

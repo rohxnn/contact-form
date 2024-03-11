@@ -9,7 +9,6 @@ import { CommonValidationErrorComponent } from '../shared/common-validation-erro
 import { noWhitespaceValidator } from '../shared/custom-validator/nowhitespace.validators';
 //third party
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-
 @Component({
   selector: 'app-contact-form',
   standalone: true,
@@ -60,8 +59,13 @@ export class ContactFormComponent implements OnInit {
   }
 
   onClickDelete(index: number) {
-    this.contactIds.splice(index - 1, 1);
+    if(this.contactIds.length >1) {
+      this.contactIds.splice(index - 1, 1);
+    }
     this.contacts.splice(index, 1);
+    if(this.contacts.length === 0){
+      this.contactForm.reset();
+    }
   }
 
   saveContacts() {
