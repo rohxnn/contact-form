@@ -74,10 +74,8 @@ export class ContactFormComponent implements OnInit {
   saveContacts() {
     this.isSaveClicked = true;
     const existingObject = this.contacts.some(data => data.email === this.contactForm.get('email').value);
-    if (this.contactForm.valid && !existingObject) {
-      this.contacts.push(this.contactForm.value)
-    } else if(this.contactForm.valid && existingObject) {
-      this.contacts[this.selectedContact] = this.contactForm.value;
+    if (this.contactForm.valid && !existingObject || this.contacts[this.selectedContact]) {
+      this.contacts[this.selectedContact] = Object.assign({}, this.contactForm.value);
     } else {
       this.contactForm.markAllAsTouched();
     }
